@@ -1,5 +1,6 @@
 # GP-based-Adversarial-Detection
 - Paper : Detect Adversarial Example Using Gaussian Process-based Detector
+- Author : Sangheon Lee, Noo-ri Kim, Jee-hyong Lee
 
 - Abstract
 
