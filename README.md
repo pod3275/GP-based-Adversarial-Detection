@@ -19,4 +19,5 @@
 
   ![image](https://user-images.githubusercontent.com/26705935/47216750-f6b51e00-d3e0-11e8-9fac-de9d644afccb.png)
   
-  
+- 추가 실험
+  - training data 수를 더 줄이거나, 더 늘여서 baseline보다 더 높은 성능을 나타내는지 알아보기
