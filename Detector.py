@@ -14,12 +14,12 @@ from tqdm import tqdm
 from keras.models import load_model
 # ----------------------------------------------------------------------
 # Hyperparameter Setting
-num_data_in_class = 10
-iteration = 30
+num_data_in_class = 1
+iteration = [10,20,30]
 # total number of data = 위 * 10
 
 data_name = 'CIFAR10'
-attack_name = 'DeepFool'
+attack_name = 'JSMA'
 
 train_dataset = data_name + '/' + attack_name
 
@@ -156,16 +156,16 @@ if __name__ == '__main__':
 
     f.write('Training data: '+str(len(x_train))+'\n')
     f.write('Test data: '+ str(len(x_test))+'\n')
-    
+    print('\n')
     #draw the latent function value
-    for iterate in range(3):
-        print('Iteration : ', iterate+1)
+    for iterate in iteration:
+        print('Iteration : ', iterate)
         
-        k = GPy.kern.Matern52(input_dim=10, variance=1.)
-        m = GPy.models.SparseGPClassification(x_train, y_train, kernel=k)
+        k = GPy.kern.Exponential(input_dim=10, variance=1.)
+        m = GPy.models.GPClassification(x_train, y_train, kernel=k)
         
         print('\n=============Model Training==============\n')
-        for i in range(iteration):
+        for i in range(iterate):
             m.optimize('lbfgs', max_iters=1000)
             
         model_prediction(m, x_test, y_test, iterate)
