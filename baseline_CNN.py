@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 def load_img():
-    location = os.getcwd() + '/' + data_name + '/' + attack_name
+    location = os.getcwd() + '/Data/' + data_name + '/' + attack_name
     file_list = os.listdir(location)
         
     count_data = np.zeros(10)
