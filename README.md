@@ -1,7 +1,4 @@
 # GP-based-Adversarial-Detection
-
-- 현재 module화 및 code 정리 중
-
 - Paper : Detect Adversarial Example Using Gaussian Process-based Detector
 - Author : Sangheon Lee, Noo-ri Kim, Jee-hyong Lee
 
