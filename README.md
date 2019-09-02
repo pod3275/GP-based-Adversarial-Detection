@@ -2,7 +2,7 @@
 
 Official Keras implementation of paper:
 
-[Adversarial example detection with Gaussian Process Regression-based Detection](http://www.itiis.org/digital-library/manuscript/2475) (TIIS).
+[Adversarial Detection with Gaussian Process Regression-based Detector](http://www.itiis.org/digital-library/manuscript/2475) (TIIS).
 
 ## Description
 
