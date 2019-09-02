@@ -6,36 +6,44 @@ Created on Mon Sep 17 17:44:28 2018
 """
 
 import keras
+import tensorflow as tf
 import numpy as np
 import os
 import GPy
+import timeit
 
 from tqdm import tqdm
 from keras.models import load_model
 # ----------------------------------------------------------------------
 # Hyperparameter Setting
-num_data_in_class = 1
-iteration = [10,20,30]
+iteration = [30]
 # total number of data = 위 * 10
 
-data_name = 'CIFAR10'
-attack_name = 'JSMA'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-train_dataset = data_name + '/' + attack_name
+flags = tf.app.flags
+FLAGS = flags.FLAGS
 
-f = open(data_name + '_' + attack_name + '_' + str(num_data_in_class*10) + '_Detector.txt', 'w')
-f.write(data_name + '_' + attack_name + '_' + str(num_data_in_class*10) + '_Detector\n')
+flags.DEFINE_string('dataset', 'MNIST', 'Training dataset name')
+flags.DEFINE_string('attack', 'FGSM', 'Adversarial attack name')
+flags.DEFINE_integer('num_data_in_class', 30, 'Number of adversarial example per one class used for detector')
+
+print("Detect", FLAGS.attack, "attack on", FLAGS.dataset, "CNN model with", str(FLAGS.num_data_in_class*10), "adversarial examples.")
+
+train_dataset = FLAGS.dataset + '/' + FLAGS.attack
+
+# Detection result will be written on .txt file
+f = open(FLAGS.dataset + '_' + FLAGS.attack + '_' + str(FLAGS.num_data_in_class*10) + '_Detector.txt', 'w')
+f.write(FLAGS.dataset + '_' + FLAGS.attack + '_' + str(FLAGS.num_data_in_class*10) + '_Detector\n')
 
 keras.backend.set_learning_phase(0)
-if data_name == 'CIFAR10': kmodel = load_model('saved_models/cifar10_ResNet32v1_model.h5')
-elif data_name == 'MNIST': kmodel = load_model('saved_models/MNIST_model.h5')
+if FLAGS.dataset == 'CIFAR10': kmodel = load_model('saved_models/cifar10_ResNet32v1_model.h5')
+elif FLAGS.dataset == 'MNIST': kmodel = load_model('saved_models/MNIST_model.h5')
 
 # ----------------------------------------------------------------------
 def preprocess_input2(x):
-    
-    x=x/255
         
-    return x
+    return x/255
 
 # ----------------------------------------------------------------------
 def load_img(dataset):
@@ -60,14 +68,14 @@ def load_img(dataset):
             img_plx1 = np.asarray(img, dtype='float32')
         
             if 'adv' in file_name:
-                if count_data[int(i)] < 2* num_data_in_class:
+                if count_data[int(i)] < 2* FLAGS.num_data_in_class:
                     adv_img.append(img_plx1)
                     count_data[int(i)] = count_data[int(i)]+1
                 else:
                     adv_img_test.append(img_plx1)
                             
             if 'origin' in file_name:
-                if count_data[int(i)] < 2* num_data_in_class:
+                if count_data[int(i)] < 2* FLAGS.num_data_in_class:
                     clean_img.append(img_plx1)
                     count_data[int(i)] = count_data[int(i)]+1
                 else:
@@ -161,13 +169,18 @@ if __name__ == '__main__':
     for iterate in iteration:
         print('Iteration : ', iterate)
         
-        k = GPy.kern.Exponential(input_dim=10, variance=1.)
-        m = GPy.models.GPClassification(x_train, y_train, kernel=k)
+        start = timeit.default_timer()
+        
+        k1 = GPy.kern.Exponential(input_dim=10, variance=1.0, lengthscale=0.001)
+        m = GPy.models.GPClassification(x_train, y_train, kernel=k1)
         
         print('\n=============Model Training==============\n')
         for i in range(iterate):
             m.optimize('lbfgs', max_iters=1000)
             
+        end = timeit.default_timer()
+        print(str(end - start) + ' seconds')
+        
         model_prediction(m, x_test, y_test, iterate)
     
     f.close()

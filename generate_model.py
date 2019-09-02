@@ -28,20 +28,24 @@ config.gpu_options.allow_growth = True
 tf.Session(config=config)
 
 # -------------------------------------------------------------------------------
-# data_name = "MNIST"
-data_name = "CIFAR10"
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+flags = tf.app.flags
+FLAGS = flags.FLAGS
+
+flags.DEFINE_string('dataset', 'MNIST', 'Training dataset name')
 
 # -------------------------------------------------------------------------------
-if data_name == "MNIST":
-    
+if FLAGS.dataset == "MNIST":
+    print("Train 5-layer CNN model with", FLAGS.dataset, "dataset.")
     batch_size = 128
     num_classes = 10
     epochs = 20
     
     # input image dimensions
     img_rows, img_cols = 28, 28
-    # 학습 데이터 : 60000개
     
+    # 학습 데이터 : 60000개
     # the data, split between train and test sets
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
     print('Train data 개수:', len(x_train))
@@ -108,7 +112,8 @@ if data_name == "MNIST":
     print('Test accuracy:', score[1])
 
 # -------------------------------------------------------------------------------
-elif data_name == 'CIFAR10':
+elif FLAGS.dataset == 'CIFAR10':
+    print("Train ResNet32 model with", FLAGS.dataset, "dataset.")
     # Training parameters
     batch_size = 128  # orig paper trained all networks with batch_size=128
     epochs = 120

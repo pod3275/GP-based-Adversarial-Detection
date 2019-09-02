@@ -21,13 +21,22 @@ from keras import backend as K
 from matplotlib import pyplot as plt
 
 
-data_name = 'CIFAR10'
-attack_name = 'DeepFool'
-save_loc = '/Data/' + data_name + '/' + attack_name
+# -------------------------------------------------------------------------------
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
+flags = tf.app.flags
+FLAGS = flags.FLAGS
 
-f = open(data_name + '_' + attack_name + '_Classifier.txt', 'w')
-f.write(data_name + '_' + attack_name + '_Classifier\n')
+flags.DEFINE_string('dataset', 'MNIST', 'Training dataset name')
+flags.DEFINE_string('attack', 'FGSM', 'Adversarial attack name')
+
+print(FLAGS.attack, "attack on", FLAGS.dataset, "classification model.")
+
+save_loc = '/Data/' + FLAGS.dataset + '/' + FLAGS.attack
+
+# result write on .txt file
+f = open(FLAGS.dataset + '_' + FLAGS.attack + '_Classifier.txt', 'w')
+f.write(FLAGS.dataset + '_' + FLAGS.attack + '_Classifier\n')
 
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
@@ -35,6 +44,9 @@ config.gpu_options.allow_growth = True
 sess = tf.Session(config=config)
 keras.backend.set_session(sess)
 
+
+# -------------------------------------------------------------------------------
+# Generated image save function
 def save_images(kmodel, adv_x, x_test, y_test, preds1, save_loc_add):
     count_class_save = np.zeros(10)
     count_class_save = count_class_save.astype('int32')
@@ -49,7 +61,7 @@ def save_images(kmodel, adv_x, x_test, y_test, preds1, save_loc_add):
         y_input=[]
         y_input.append(preds1[i])
 
-        if attack_name == 'BIM':
+        if FLAGS.attack == 'BIM':
             y_input = keras.utils.to_categorical(y_input, 10)
 
         adv_x_eval = adv_x.eval(session = sess, feed_dict={x:x_img_input/255, y:y_input})
@@ -57,6 +69,7 @@ def save_images(kmodel, adv_x, x_test, y_test, preds1, save_loc_add):
         preds2 = np.argmax(kmodel.predict(adv_x_eval/255), axis=1)
         
         '''
+        # Clean image, adversarial image 출력
         plt.figure()
         plt.subplot(1, 3, 1)
         plt.imshow(adv_x_eval[0] / 255)  # division by 255 to convert [0, 255] to [0, 1]
@@ -95,7 +108,9 @@ def save_images(kmodel, adv_x, x_test, y_test, preds1, save_loc_add):
     #f.write('Adv class: ' + str(buffer[0:100]) + '\n')
 
 
-if data_name == 'MNIST':
+# -------------------------------------------------------------------------------
+# Model and dataset load
+if FLAGS.dataset == 'MNIST':
     img_rows, img_cols = 28, 28
     num_classes = 10
     
@@ -121,7 +136,7 @@ if data_name == 'MNIST':
     kmodel = load_model('saved_models/MNIST_model.h5')
     wrap = KerasModelWrapper(kmodel)
 
-elif data_name == 'CIFAR10':
+elif FLAGS.dataset == 'CIFAR10':
     (x_train, y_train), (x_test, y_test) = cifar10.load_data()
     
     img_rows, img_cols, nchannels = x_train.shape[1:4]
@@ -132,23 +147,25 @@ elif data_name == 'CIFAR10':
     wrap = KerasModelWrapper(kmodel)
 
 
-#Placeholder
+# -------------------------------------------------------------------------------
+# Placeholder
 x = tf.placeholder(tf.float32, shape=(None, img_rows, img_cols, nchannels))
 y = tf.placeholder(tf.float32, shape=(None, nb_classes))
 
-if attack_name == 'BIM':
+if FLAGS.attack == 'BIM':
     y = tf.placeholder(tf.float32, shape=(None, 10))
     
 preds1 = np.argmax(kmodel.predict(x_test/255), axis=1)
 preds1 = preds1.reshape(preds1.shape[0], 1)
 
 
-#Attack
-if attack_name == 'FGSM':
+# -------------------------------------------------------------------------------
+# Attack FGSM
+if FLAGS.attack == 'FGSM':
     attack = FastGradientMethod(wrap, sess=sess)
     eps = 0
     
-    if data_name == 'MNIST':
+    if FLAGS.dataset == 'MNIST':
         for ep in range(5):
             eps = eps + 0.1
             params = {'eps': eps,
@@ -161,7 +178,7 @@ if attack_name == 'FGSM':
                         
             save_images(kmodel, adv_x, x_test, y_test, preds1, save_loc + '_e' + str(eps))
             
-    if data_name == 'CIFAR10':
+    if FLAGS.dataset == 'CIFAR10':
         for ep in range(10):
             eps = eps + 1
             params = {'eps': eps/255,
@@ -174,21 +191,23 @@ if attack_name == 'FGSM':
                         
             save_images(kmodel, adv_x, x_test, y_test, preds1, save_loc + '_e' + str(eps))
            
-            
-#attack_JSMA
-if attack_name == 'JSMA':
+   
+# -------------------------------------------------------------------------------         
+# Attack JSMA
+if FLAGS.attack == 'JSMA':
     attack = SaliencyMapMethod(wrap, sess=sess)
     params = {'clip_min': 0., 'clip_max': 1.}
     adv_x = attack.generate(x, **params)
     save_images(kmodel, adv_x, x_test, y_test, preds1, save_loc)
 
 
-#attack_BIM
-if attack_name == 'BIM':
+# -------------------------------------------------------------------------------
+# Attack BIM
+if FLAGS.attack == 'BIM':
     attack = BasicIterativeMethod(wrap, sess=sess)
     eps = 0
     
-    if data_name == 'MNIST':
+    if FLAGS.dataset == 'MNIST':
         for ep in range(5):
             eps = eps + 0.1
             params = {'eps': eps,
@@ -205,7 +224,7 @@ if attack_name == 'BIM':
                         
             save_images(kmodel, adv_x, x_test, y_test, preds1, save_loc + '_e' + str(eps))
             
-    if data_name == 'CIFAR10':
+    if FLAGS.dataset == 'CIFAR10':
         for ep in range(10):
             eps = eps + 1
             params = {'eps': eps/255,
@@ -223,8 +242,9 @@ if attack_name == 'BIM':
             save_images(kmodel, adv_x, x_test, y_test, preds1, save_loc + '_e' + str(eps))
 
 
-#attack_DeepFool
-if attack_name == 'DeepFool':
+# -------------------------------------------------------------------------------
+# Attack DeepFool
+if FLAGS.attack == 'DeepFool':
     attack = DeepFool(wrap, sess=sess)
     params = {'nb_candidate': 10,
               'max_iter': 100,
@@ -234,8 +254,9 @@ if attack_name == 'DeepFool':
     save_images(kmodel, adv_x, x_test, y_test, preds1, save_loc)
 
 
-#attack_CW
-if attack_name == 'CW':
+# -------------------------------------------------------------------------------
+# Attack C&W
+if FLAGS.attack == 'CW':
     attack = CarliniWagnerL2(wrap, sess=sess)
     params = {'batch_size':1,
               'max_iterations':1000,
