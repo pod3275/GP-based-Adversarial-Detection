@@ -68,7 +68,7 @@ $ python attack.py --dataset MNIST --attack FGSM --num_data_in_class 30
   
 ## Citation
 ```
-@inproceedings{GP-basedAdvDetect,
+@proceedings{GP-basedAdvDetect,
 	title = {Adversarial Detection with Gaussian Process Regression-based Detector},
 	author = {Sangheon Lee, Noo-ri Kim, Youngwha Cho, Jae-Young Choi, Suntae Kim, Jeong-Ah Kim, Jee-Hyong Lee},
 	booktitle = {KSII Transactions on Internet and Information Systems (TIIS)},
