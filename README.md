@@ -48,15 +48,15 @@ Official Keras implementation of paper:
 - num_data_in_class : number of adversarial example in one class for training detector
 
 ## Results
-- Attack accuracy
+**- Attack accuracy**
 
   ![image](https://user-images.githubusercontent.com/26705935/64116027-20deb700-cdcc-11e9-9187-f6528a5c990f.png)
   
-- Detection accuracy
+**- Detection accuracy**
 
   ![image](https://user-images.githubusercontent.com/26705935/64116053-33f18700-cdcc-11e9-93a2-97296ab2232f.png)
   
-- Number of adversarial examples for detector training
+**- Number of adversarial examples for detector training**
 
   ![image](https://user-images.githubusercontent.com/26705935/64116090-4a97de00-cdcc-11e9-8725-0f373dfa0e17.png)
   
