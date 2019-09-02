@@ -39,11 +39,13 @@ Official Keras implementation of paper:
 
 `$ python attack.py --dataset MNIST --attack FGSM`
 
-- Available attack method : FGSM, BIM, JSMA, DeepFool, CW 
+- Available attack method : [FGSM](https://arxiv.org/pdf/1412.6572.pdf), [BIM](https://arxiv.org/pdf/1607.02533.pdf), [JSMA](https://arxiv.org/pdf/1511.07528.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [CW](https://arxiv.org/pdf/1608.04644.pdf) 
 
 **4. Detect with GP-based detector**
 
 `$ python attack.py --dataset MNIST --attack FGSM --num_data_in_class 30`
+
+- num_data_in_class : number of adversarial example in one class for training detector
 
 ## Results
 - Attack accuracy
@@ -57,6 +59,8 @@ Official Keras implementation of paper:
 - Number of adversarial examples for detector training
 
   ![image](https://user-images.githubusercontent.com/26705935/64116090-4a97de00-cdcc-11e9-8725-0f373dfa0e17.png)
+  
+  - Better performance with extremely small number of adversarial example.
   
 ## Citation
 ```
