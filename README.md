@@ -56,16 +56,22 @@ $ python attack.py --dataset MNIST --attack FGSM --num_data_in_class 30
 ## Results
 **- Attack accuracy**
 
- <img src="https://github.com/pod3275/GP-based-Adversarial-Detection/blob/master/assets/Table%201.png" width="700" height="136"></center>
+<div align="center">
+ <img src="https://github.com/pod3275/GP-based-Adversarial-Detection/blob/master/assets/Table%201.png" width="700" height="136"><br>
+</div>
   
 **- Detection accuracy**
 
- <img src="https://github.com/pod3275/GP-based-Adversarial-Detection/blob/master/assets/Table%202%2C3.png" width="700" height="202"></center>
+<div align="center">
+ <img src="https://github.com/pod3275/GP-based-Adversarial-Detection/blob/master/assets/Table%202%2C3.png" width="700" height="202"><br>
+</div>
  
 **- Number of adversarial examples for detector training**
 
- <img src="https://github.com/pod3275/GP-based-Adversarial-Detection/blob/master/assets/graph.png" width="828" height="279"></center>
- 
+<div align="center">
+ <img src="https://github.com/pod3275/GP-based-Adversarial-Detection/blob/master/assets/graph.png" width="828" height="279"><br>
+</div>
+
   - Better performance with extremely small number of adversarial example.
   
 ## Citation
