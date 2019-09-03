@@ -6,8 +6,8 @@ Official Keras implementation of paper:
 
 ## Description
 
-  ![image](https://user-images.githubusercontent.com/26705935/64164918-01ed2d00-ce7f-11e9-9dae-82246ff770fa.png)
-  
+ <img src="https://github.com/pod3275/GP-based-Adversarial-Detection/blob/master/assets/model.png" width="600" height="310"></center>
+
 - Adversarial example detection with Gaussian Process Regression-based detector.
 
 - Existing deep learning-based adversarial detection methods require numerous adversarial images for their training. 
