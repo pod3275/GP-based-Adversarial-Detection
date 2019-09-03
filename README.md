@@ -6,7 +6,7 @@ Official Keras implementation of paper:
 
 ## Description
 
- <img src="https://github.com/pod3275/GP-based-Adversarial-Detection/blob/master/assets/model.png" width="600" height="310"></center>
+ <img src="https://github.com/pod3275/GP-based-Adversarial-Detection/blob/master/assets/model.png" width="754" height="374"></center>
 
 - Adversarial example detection with Gaussian Process Regression-based detector.
 
@@ -54,16 +54,16 @@ $ python attack.py --dataset MNIST --attack FGSM --num_data_in_class 30
 ## Results
 **- Attack accuracy**
 
-  ![image](https://user-images.githubusercontent.com/26705935/64116027-20deb700-cdcc-11e9-9187-f6528a5c990f.png)
+ <img src="https://github.com/pod3275/GP-based-Adversarial-Detection/blob/master/assets/Table%201.png" width="700" height="136"></center>
   
 **- Detection accuracy**
 
-  ![image](https://user-images.githubusercontent.com/26705935/64116053-33f18700-cdcc-11e9-93a2-97296ab2232f.png)
-  
+ <img src="https://github.com/pod3275/GP-based-Adversarial-Detection/blob/master/assets/Table%202%2C3.png" width="700" height="202"></center>
+ 
 **- Number of adversarial examples for detector training**
 
-  ![image](https://user-images.githubusercontent.com/26705935/64116090-4a97de00-cdcc-11e9-8725-0f373dfa0e17.png)
-  
+ <img src="https://github.com/pod3275/GP-based-Adversarial-Detection/blob/master/assets/graph.png" width="828" height="279"></center>
+ 
   - Better performance with extremely small number of adversarial example.
   
 ## Citation
