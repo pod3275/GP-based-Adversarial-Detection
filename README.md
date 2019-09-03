@@ -6,7 +6,9 @@ Official Keras implementation of paper:
 
 ## Description
 
- <img src="https://github.com/pod3275/GP-based-Adversarial-Detection/blob/master/assets/model.png" width="754" height="374"></center>
+<div align="center">
+  <img src="https://github.com/pod3275/GP-based-Adversarial-Detection/blob/master/assets/model.png" width="754" height="374"><br>
+</div>
 
 - Adversarial example detection with Gaussian Process Regression-based detector.
 
