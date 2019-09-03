@@ -6,13 +6,13 @@ Official Keras implementation of paper:
 
 ## Description
 
-  ![image](https://user-images.githubusercontent.com/26705935/47216775-0b91b180-d3e1-11e8-90d3-d015f70e02e0.png)
-
+  ![image](https://user-images.githubusercontent.com/26705935/64164918-01ed2d00-ce7f-11e9-9dae-82246ff770fa.png)
+  
 - Adversarial example detection with Gaussian Process Regression-based detector.
 
 - Existing deep learning-based adversarial detection methods require numerous adversarial images for their training. 
 
-- The proposed method overcomes this problem by performing classification based on the statistical features of adversarial images and clean images that are extracted by Gaussian process regression with a small number of images. 
+- The proposed method overcomes this problem by performing classification based on the statistical features of adversarial images and clean images that are extracted by Gaussian process regression **with a small number of images.**
   
 ## Requirements
 
@@ -35,21 +35,21 @@ $ git clone https://github.com/pod3275/GP-based-Adversarial-Detection.git
 $ python generate_model.py --dataset MNIST
 ```
 
-- Available dataset : [MNIST](http://yann.lecun.com/exdb/mnist/), [CIFAR10](https://www.cs.toronto.edu/~kriz/cifar.html)
+- Available datasets : [MNIST](http://yann.lecun.com/exdb/mnist/), [CIFAR10](https://www.cs.toronto.edu/~kriz/cifar.html)
 
 **3. Generate adversarial examples**
 ```
 $ python attack.py --dataset MNIST --attack FGSM
 ```
 
-- Available attack method : [FGSM](https://arxiv.org/pdf/1412.6572.pdf), [BIM](https://arxiv.org/pdf/1607.02533.pdf), [JSMA](https://arxiv.org/pdf/1511.07528.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [CW](https://arxiv.org/pdf/1608.04644.pdf) 
+- Available attack methods : [FGSM](https://arxiv.org/pdf/1412.6572.pdf), [BIM](https://arxiv.org/pdf/1607.02533.pdf), [JSMA](https://arxiv.org/pdf/1511.07528.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [CW](https://arxiv.org/pdf/1608.04644.pdf) 
 
 **4. Detect with GP-based detector**
 ```
 $ python attack.py --dataset MNIST --attack FGSM --num_data_in_class 30
 ```
 
-- num_data_in_class : number of adversarial example in one class for training detector
+- *num_data_in_class* : number of adversarial example in one class for training detector
 
 ## Results
 **- Attack accuracy**
