@@ -6,13 +6,22 @@ Created on Sat Sep 22 23:10:17 2018
 """
 
 import os
+import tensorflow as tf
 import numpy as np
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 
-data_name = 'MNIST'
-attack_name = 'FGSM'
-f = open(data_name + '_' + attack_name + '_L2size.txt', 'w')
+
+flags = tf.app.flags
+FLAGS = flags.FLAGS
+
+flags.DEFINE_string('dataset', 'CIFAR10', 'target dataset of the trained model')
+flags.DEFINE_string('attack', 'BIM_e9', 'attack to check the label')
+
+
+f = open(FLAGS.dataset + '_' + FLAGS.attack + '_L2size.txt', 'w')
+f.write(FLAGS.dataset + '_' + FLAGS.attack + '_L2 size.txt\n')
+print(FLAGS.dataset + '_' + FLAGS.attack + '_L2 size\n')
 
 def gray2rgb(img):
     w, h, _ = img.shape
@@ -22,8 +31,8 @@ def gray2rgb(img):
     ret[:, :, 2] = img[:,:,0]
     return ret
 
-def load_img(dataset):
-    location = os.getcwd() + '/Data/' + data_name + '/' + attack_name
+def load_img():
+    location = os.getcwd() + '/Data/' + FLAGS.dataset + '/' + FLAGS.attack
     file_list = os.listdir(location)
         
     adv_img = []
@@ -53,7 +62,7 @@ def load_img(dataset):
     return adv_img, clean_img, total
 
 
-adv, clean, count = load_img('BIM_e9')
+adv, clean, count = load_img()
 ### adv = adv*255
 noise = adv-clean
 
@@ -66,6 +75,7 @@ for leng in range(len(noise)):
 avg_l2_norm = avg_l2_norm / len(noise)
 f.write('Total data : ' + str(count) + '\n')
 f.write('Average L2 Norm of Noise : ' + str(avg_l2_norm) + '\n\n')
+print('Average L2 Norm of Noise :', avg_l2_norm)
 
 f.close()
 
