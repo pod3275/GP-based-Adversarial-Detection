@@ -1,5 +1,5 @@
 Kernel
-	1. MNIST FGSM - 100°³
+	1. MNIST FGSM - 100Â°Â³
 	MLP : 88.13
 	Exponential : 88.92324
 	OU : 88.92324
