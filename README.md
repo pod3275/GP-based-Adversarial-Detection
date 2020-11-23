@@ -22,6 +22,10 @@ Official Keras implementation of paper:
 
 ## Requirements
 
+```
+pip install -r requirements.txt
+```
+
 - [Python 3.6](https://www.python.org/downloads/)
 - [Tensorflow == 1.12.0](https://github.com/tensorflow/tensorflow)
 - [Keras >= 2.2.4](https://github.com/keras-team/keras)
@@ -30,12 +34,14 @@ Official Keras implementation of paper:
 - [matplotlib](https://matplotlib.org/)
 - [tqdm](https://github.com/tqdm/tqdm)
 
+
 <br>
 
 ## How to run
 **1. Git clone**
 ```
 $ git clone https://github.com/pod3275/GP-based-Adversarial-Detection.git
+$ cd GP-based-Adversarial-Detection
 ```
 
 **2. Training target model**
@@ -57,7 +63,7 @@ $ python attack.py --dataset MNIST --attack JSMA
 
 **4. Detect with GP-based detector**
 ```
-$ python attack.py --dataset MNIST --attack DeepFool --num_data_in_class 30
+$ python gp_detector.py --dataset MNIST --attack DeepFool --num_data_in_class 30
 ```
 
 - *num_data_in_class* : number of adversarial example in one class for training detector
