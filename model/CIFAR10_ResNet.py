@@ -7,10 +7,17 @@ Created on Mon Nov 23 23:14:05 2020
 
 from __future__ import print_function
 
-import keras
-import tensorflow as tf
-import numpy as np
 import os
+import warnings
+
+# 경고 무시
+warnings.filterwarnings("ignore")
+os.environ['KMP_WARNINGS'] = '0'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+import keras
+import numpy as np
+import tensorflow as tf
 
 from keras.datasets import cifar10
 from keras.models import Model
@@ -20,24 +27,17 @@ from keras.callbacks import ModelCheckpoint, LearningRateScheduler, ReduceLROnPl
 from keras.preprocessing.image import ImageDataGenerator
 from keras.regularizers import l2
 
-# -------------------------------------------------------------------------------
-# 데이터에 따라 GPU 메모리 동적할당
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-tf.Session(config=config)
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-# -------------------------------------------------------------------------------
 
 class CIFAR10_ResNet():
     
     def __init__(self, batch_size=128, epochs=120, data_augmentation=False,
-                 num_classes=10, subtract_pixel_mean=False, model_n=5):
+                 subtract_pixel_mean=False, resnet_n=5):
         # Training parameters
         self.batch_size = batch_size  # orig paper trained all networks with batch_size=128
         self.epochs = epochs
         self.data_augmentation = data_augmentation
-        self.num_classes = num_classes
+        self.num_classes = 10
+        
         # Subtracting pixel mean improves accuracy
         self.subtract_pixel_mean = subtract_pixel_mean
         
@@ -55,7 +55,7 @@ class CIFAR10_ResNet():
         # ResNet164 |27(18)| -----     | 94.07     | -----     | 94.54     | ---(---)
         # ResNet1001| (111)| -----     | 92.39     | -----     | 95.08+-.14| ---(---)
         # ---------------------------------------------------------------------------
-        self.n = model_n
+        self.n = resnet_n
         
         # Model version
         # Orig paper: version = 1 (ResNet v1), Improved ResNet: version = 2 (ResNet v2)
@@ -70,10 +70,14 @@ class CIFAR10_ResNet():
         # Model name, depth and version
         self.model_type = 'ResNet%dv%d' % (self.depth, self.version)
     
+        # 데이터에 따라 GPU 메모리 동적할당
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+        tf.Session(config=config)    
     
     def lr_schedule(self, epoch):
         """Learning Rate Schedule
-        Learning rate is scheduled to be reduced after 80, 120, 160, 180 epochs.
+        Learning rate is scheduled to be reduced after 70, 100, 120, 150 epochs.
         Called automatically every epoch as part of callbacks during training.
         # Arguments
             epoch (int): The number of epochs

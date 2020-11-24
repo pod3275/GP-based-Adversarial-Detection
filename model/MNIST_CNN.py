@@ -7,9 +7,16 @@ Created on Mon Nov 23 23:35:37 2020
 
 from __future__ import print_function
 
+import os
+import warnings
+
+# 경고 무시
+warnings.filterwarnings("ignore")
+os.environ['KMP_WARNINGS'] = '0'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 import keras
 import tensorflow as tf
-import os
 
 from keras import backend as K
 from keras.datasets import mnist 
@@ -17,15 +24,6 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
 from keras.callbacks import ModelCheckpoint
 
-# -------------------------------------------------------------------------------
-# 데이터에 따라 GPU 메모리 동적할당
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-tf.Session(config=config)
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-
-# -------------------------------------------------------------------------------
 
 class MNIST_CNN():
     
@@ -36,14 +34,19 @@ class MNIST_CNN():
         # input image dimensions
         self.num_classes = 10
         self.img_rows, self.img_cols = 28, 28
+        
+        # 데이터에 따라 GPU 메모리 동적할당
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+        tf.Session(config=config)
 
 
     def load_mnist_data(self):
         # 학습 데이터 : 60000개
         # the data, split between train and test sets
         (x_train, y_train), (x_test, y_test) = mnist.load_data()
-        print('Train data 개수:', len(x_train))
-        print('Test data 개수:', len(x_test))
+        print('Num train data:', len(x_train))
+        print('Num test data:', len(x_test))
 
         if K.image_data_format() == 'channels_first':
             x_train = x_train.reshape(x_train.shape[0], 1, self.img_rows, self.img_cols)

@@ -28,7 +28,7 @@ pip install -r requirements.txt
 
 - [Python 3.6](https://www.python.org/downloads/)
 - [Tensorflow == 1.12.0](https://github.com/tensorflow/tensorflow)
-- [Keras >= 2.2.4](https://github.com/keras-team/keras)
+- [Keras == 2.2.4](https://github.com/keras-team/keras)
 - [cleverhans >= 3.0.1](https://github.com/tensorflow/cleverhans)
 - [GPy >= 1.9.6](https://github.com/SheffieldML/GPy)
 - [matplotlib](https://matplotlib.org/)
@@ -46,7 +46,7 @@ $ cd GP-based-Adversarial-Detection
 
 **2. Training target model**
 ```
-$ python generate_model.py --dataset MNIST
+$ python train_model.py --dataset MNIST
 ```
 
 - Available datasets : [MNIST](http://yann.lecun.com/exdb/mnist/), [CIFAR10](https://www.cs.toronto.edu/~kriz/cifar.html)
@@ -58,15 +58,16 @@ $ python attack.py --dataset MNIST --attack JSMA
 
 - Available attack methods : [FGSM](https://arxiv.org/pdf/1412.6572.pdf), [BIM](https://arxiv.org/pdf/1607.02533.pdf), [JSMA](https://arxiv.org/pdf/1511.07528.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [CW](https://arxiv.org/pdf/1608.04644.pdf) 
 
-  - For FGSM and BIM, you should add epsilon at the end of the attack name (*ex. CIFAR10: "--attack FGSM_e9"*)
-  - Same as the **name of directory** where the adversarial data saved
-
 **4. Detect with GP-based detector**
 ```
 $ python gp_detector.py --dataset MNIST --attack DeepFool --num_data_in_class 30
 ```
 
 - *num_data_in_class* : number of adversarial example in one class for training detector
+
+- For FGSM and BIM, you should add epsilon at the end of the attack name (*ex. CIFAR10: "--attack FGSM_e9"*)
+  - Same as the **name of directory** where the adversarial data saved
+
 
 <br>
 
@@ -93,7 +94,7 @@ $ python gp_detector.py --dataset MNIST --attack DeepFool --num_data_in_class 30
   
 <br>
 
-## Other operations
+## Utils
 **1. Check adversarial image & model prediction results**
 ```
 $ python check_label.py --dataset CIFAR10 --attack DeepFool
@@ -113,7 +114,7 @@ $ python check_label.py --dataset CIFAR10 --attack DeepFool
   
 **2. Calculate L2 perturbations of adversarial examples**
 ```
-$ python calculate_L2_perturb.py --dataset CIFAR10 --attack BIM_e9
+$ python l2_perturb.py --dataset CIFAR10 --attack BIM_e9
 ```
 
 <div align="center">

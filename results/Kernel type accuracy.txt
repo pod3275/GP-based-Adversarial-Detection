@@ -1,0 +1,9 @@
+Kernel
+	1. MNIST FGSM - 100°³
+	MLP : 88.13
+	Exponential : 88.92324
+	OU : 88.92324
+	Matern32 : 86
+	Matern52 : 85.47
+	RatQuad : 85.13
+	ExpQuad : 85.14
